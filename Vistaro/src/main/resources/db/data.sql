@@ -1,0 +1,77 @@
+--user
+{
+  "name" : "raghav",
+  "email" :"raghav1@gmail.com",
+  "phone" : "8168314273",
+  "password" : "12345678",
+  "city": "Bengaluru"
+}
+
+
+--venue
+{
+  "name": "Cinepolis",
+  "address": "Sector 32",
+  "city": "Chandigarh",
+  "venueType": "CINEMA",
+  "screenName": "Audi 1",
+  "seatLayoutJson": {
+    "rows": [
+      { "label": "A", "count": 10, "type": "PREMIUM", "price": 350 },
+      { "label": "B", "count": 12, "type": "GOLD", "price": 300 },
+      { "label": "C", "count": 12, "type": "SILVER", "price": 250 }
+    ]
+  }
+}
+
+
+
+--event
+{
+  "title": "Dune 2",
+  "category": "MOVIE",
+  "subCategory": "Sci-fi",
+  "startTime": "2025-03-10T00:00:00",
+  "endTime": "2025-03-30T23:59:59"
+}
+
+
+--eventslot
+{
+  "eventId": 5,
+  "venueId": 3,
+  "startTime": "2025-03-15T18:00:00",
+  "endTime": "2025-03-15T21:00:00",
+  "format": "IMAX",
+  "language": "English",
+  "basePrice": 250
+}
+
+
+--food
+{
+ "slotId":3,
+ "name" :"Pop Corn - Small",
+ "price":200
+
+}
+
+--booking
+{
+  "userId": 101,
+  "slotId": 5,
+  "seatIds": [12, 13, 14],
+  "foodItems": [
+    { "foodId": 3, "quantity": 2 },
+    { "foodId": 5, "quantity": 1 }
+  ],
+  "offerCode": "BMS50",
+  "giftCardCode": "GIFT100"
+}
+
+
+
+
+
+
+
