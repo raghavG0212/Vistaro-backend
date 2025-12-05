@@ -49,6 +49,7 @@ public class AuthController {
 
         AuthResponse resp = new AuthResponse(
                 token,
+                saved.getName(),
                 saved.getEmail(),
                 roleName,
                 saved.getCity(),
@@ -72,6 +73,7 @@ public class AuthController {
 
         AuthResponse resp = new AuthResponse(
                 token,
+                user.getName(),
                 user.getEmail(),
                 roleName,
                 user.getCity(),

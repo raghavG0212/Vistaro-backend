@@ -3,13 +3,15 @@ package com.project.vistaro.dto;
 public class AuthResponse {
 
     private String token;
+    private String name;
     private String email;
     private String role;
     private String city;
     private Integer userId;   // ⭐ new field added
-	public AuthResponse(String token, String email, String role, String city, Integer userId) {
+	public AuthResponse(String token, String name, String email, String role, String city, Integer userId) {
 		super();
 		this.token = token;
+		this.name = name;
 		this.email = email;
 		this.role = role;
 		this.city = city;
@@ -20,6 +22,12 @@ public class AuthResponse {
 	}
 	public void setToken(String token) {
 		this.token = token;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
 	}
 	public String getEmail() {
 		return email;
@@ -45,6 +53,5 @@ public class AuthResponse {
 	public void setUserId(Integer userId) {
 		this.userId = userId;
 	}
-
-   
+	
 }

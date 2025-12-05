@@ -203,7 +203,7 @@ CREATE TABLE Food (
     price DECIMAL(10,2) NOT NULL CHECK (price > 0),
     CONSTRAINT fk_food_slot FOREIGN KEY (slot_id)
         REFERENCES EventSlot(slot_id)
-        ON DELETE CASCADE ON UPDATE CASCADE,
+        ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 

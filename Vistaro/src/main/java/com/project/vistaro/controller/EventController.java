@@ -131,7 +131,7 @@ public class EventController {
         return ResponseEntity.ok(entityToDto(updated));
     }
     
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{eventId}")
     public ResponseEntity<Void> deleteEvent(@PathVariable Integer eventId){
     	service.deleteEvent(eventId);
     	return ResponseEntity.ok().build();

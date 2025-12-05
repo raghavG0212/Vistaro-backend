@@ -25,10 +25,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User updateUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userDao.updateUser(user);
+    public User updateUser(User updatedUser) {
+
+        // 1. Fetch existing user from DB
+        User existing = userDao.getUserById(updatedUser.getUserId())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: " + updatedUser.getUserId()));
+
+        // 2. Update allowed fields
+        existing.setName(updatedUser.getName());
+        existing.setPhone(updatedUser.getPhone());
+        existing.setCity(updatedUser.getCity());
+
+        // 3. Update password ONLY if user entered a new one
+        if (updatedUser.getPassword() != null && !updatedUser.getPassword().trim().isEmpty()) {
+            existing.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        }
+
+        // 4. Update role only if provided (optional)
+        if (updatedUser.getRole() != null) {
+            existing.setRole(updatedUser.getRole());
+        }
+
+        // 5. Save and return
+        return userDao.updateUser(existing);
     }
+
 
     @Override
     public User getUserById(Integer id) {
