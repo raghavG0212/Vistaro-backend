@@ -108,5 +108,20 @@ public class EventSlotController {
                 .collect(Collectors.toList());
         return ResponseEntity.ok(dtos);
     }
+    
+    @PostMapping("/bulk")
+    public ResponseEntity<List<EventSlotDto>> createSlots(@RequestBody List<EventSlotDto> dtos) {
+        List<EventSlot> saved = dtos.stream()
+            .map(this::dtoToEntity)
+            .map(eventSlotService::addEventSlot)
+            .collect(Collectors.toList());
+
+        List<EventSlotDto> result = saved.stream()
+            .map(this::entityToDto)
+            .collect(Collectors.toList());
+
+        return ResponseEntity.ok(result);
+    }
+
 }
 
