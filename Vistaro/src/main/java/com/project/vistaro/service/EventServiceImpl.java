@@ -1,10 +1,12 @@
 package com.project.vistaro.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.project.vistaro.exception.BusinessRuleException;
 import com.project.vistaro.exception.ResourceNotFoundException;
 import com.project.vistaro.model.Event;
 import com.project.vistaro.repository.EventDao;
@@ -65,11 +67,17 @@ public class EventServiceImpl implements EventService {
         return dao.update(existing);
     }
 
-	@Override
-	public void deleteEvent(Integer eventId) {
-		// TODO Auto-generated method stub
-		dao.findById(eventId).orElseThrow(()-> new ResourceNotFoundException("Event with id :"+eventId+" not found"));
-		dao.delete(eventId);
-		
-	}
+    @Override
+    public void deleteEvent(Integer eventId) {
+        Event e = dao.findById(eventId)
+            .orElseThrow(() -> new ResourceNotFoundException("Event not found"));
+
+        LocalDateTime now = LocalDateTime.now();
+
+        if (now.isAfter(e.getStartTime()) && now.isBefore(e.getEndTime())) {
+            throw new BusinessRuleException("Event cannot be deleted during active time window.");
+        }
+
+        dao.delete(eventId);
+    }
 }

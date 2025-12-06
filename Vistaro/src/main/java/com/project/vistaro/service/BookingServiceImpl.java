@@ -17,6 +17,8 @@ import com.project.vistaro.dto.BookingResponseDto;
 import com.project.vistaro.dto.CombinedBookingDetailsDto;
 import com.project.vistaro.dto.PaymentResponseDto;
 import com.project.vistaro.dto.RefundResponseDto;
+import com.project.vistaro.exception.BadRequestException;
+import com.project.vistaro.exception.BusinessRuleException;
 import com.project.vistaro.exception.ResourceNotFoundException;
 import com.project.vistaro.model.Booking;
 import com.project.vistaro.model.BookingFood;
@@ -70,7 +72,7 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public BookingResponseDto createBooking(BookingCreateDto dto) {
         if (dto.getSeatIds() == null || dto.getSeatIds().isEmpty()) {
-            throw new IllegalArgumentException("At least one seat must be selected");
+        	throw new BadRequestException("At least one seat must be selected");
         }
 
         // TEMP: dummy user if not provided (you'll replace with real auth later)
@@ -81,17 +83,17 @@ public class BookingServiceImpl implements BookingService {
         List<Seat> seats = seatDao.findByIds(seatIds);
 
         if (seats.size() != seatIds.size()) {
-            throw new RuntimeException("Some seats do not exist");
+            throw new ResourceNotFoundException("Some selected seats do not exist");
         }
 
         Integer slotIdFromSeats = seats.get(0).getSlotId();
         if (!slotIdFromSeats.equals(dto.getSlotId())) {
-            throw new RuntimeException("Seats do not belong to given slot");
+            throw new BadRequestException("Selected seats do not belong to this slot");
         }
 
         for (Seat s : seats) {
             if (Boolean.TRUE.equals(s.getIsBooked())) {
-                throw new RuntimeException("One or more seats are already booked");
+                throw new BusinessRuleException("One or more seats are already booked");
             }
         }
 
@@ -126,7 +128,7 @@ public class BookingServiceImpl implements BookingService {
                     !today.isAfter(offer.getValidTill());
 
             if (!activeDate || !Boolean.TRUE.equals(offer.getIsActive())) {
-                throw new RuntimeException("Offer not active or expired");
+                throw new BusinessRuleException("Offer is not active or has expired");
             }
 
             BigDecimal percent = BigDecimal
@@ -152,7 +154,7 @@ public class BookingServiceImpl implements BookingService {
 
             LocalDate today = LocalDate.now();
             if (Boolean.TRUE.equals(gc.getIsRedeemed()) || today.isAfter(gc.getExpiryDate())) {
-                throw new RuntimeException("Gift card already used or expired");
+                throw new BusinessRuleException("Gift card already used or expired");
             }
 
             BigDecimal applyAmount = gc.getAmount();
@@ -174,7 +176,7 @@ public class BookingServiceImpl implements BookingService {
         try {
             seatsJson = objectMapper.writeValueAsString(seatIds);
         } catch (Exception e) {
-            throw new RuntimeException("Error serializing seats to JSON", e);
+            throw new BadRequestException("Could not serialize seat list");
         }
 
         // 7. Build Booking model
@@ -295,7 +297,7 @@ public class BookingServiceImpl implements BookingService {
 
         Timestamp startTs = (Timestamp) details.get("show_start");
         if (startTs == null) {
-            throw new RuntimeException("Show start time not found for booking");
+            throw new ResourceNotFoundException("Show start time not found");
         }
 
         LocalDateTime showStart = startTs.toLocalDateTime();
