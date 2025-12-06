@@ -91,6 +91,7 @@ public class EventSlotDaoImpl implements EventSlotDao {
         return jdbcTemplate.query(sql, new EventSlotRowMapper(), eventId);
     }
 
+
     @Override
     public List<EventSlot> findByCity(String city) {
         String sql = """
