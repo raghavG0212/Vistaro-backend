@@ -72,6 +72,29 @@
 
 
 
+{
+  "userId": 4,
+  "title": "Local Music Night",
+  "description": "An amazing evening of indie music vibes.",
+  "subCategory": "Music",
+  "bannerUrl": "https://example.com/event-banner.png",
+  "thumbnailUrl": "https://example.com/thumb.png",
+
+  "artist": "DJ Nova",
+  "host": "IndieRecords",
+  "genre": "Indie Rock",
+
+  "eventStart": "2025-03-15T18:00:00",
+  "eventEnd": "2025-03-15T21:00:00",
+
+  "venueId": 3,
+  "slotStart": "2025-03-15T18:00:00",
+  "slotEnd": "2025-03-15T21:00:00",
+
+  "basePrice": 399.0
+}
+
+
 
 
 

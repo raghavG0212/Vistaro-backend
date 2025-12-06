@@ -311,20 +311,37 @@ CREATE TABLE GiftCard (
 
 
 
-CREATE TABLE UserEvent (
-    user_event_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE UserEventDraft (
+    draft_id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT NOT NULL,
-    event_id INT NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    sub_category VARCHAR(100),
+    banner_url VARCHAR(500),
+    thumbnail_url VARCHAR(500),
+    artist VARCHAR(255),
+    host VARCHAR(255),
+    genre VARCHAR(255),
+    event_start DATETIME NOT NULL,
+    event_end DATETIME NOT NULL,
+    venue_id INT NOT NULL,
+    slot_start DATETIME,
+    slot_end DATETIME,
+    base_price DECIMAL(10,2),
+    event_id INT,
+    slot_id INT,
     approval_status ENUM('PENDING','APPROVED','REJECTED') DEFAULT 'PENDING',
+    admin_comment VARCHAR(500),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-
-    UNIQUE(user_id, event_id),
-
-    CONSTRAINT fk_userevent_user FOREIGN KEY (user_id)
+    CONSTRAINT fk_draft_user FOREIGN KEY (user_id)
         REFERENCES User(user_id)
         ON DELETE CASCADE ON UPDATE CASCADE,
-
-    CONSTRAINT fk_userevent_event FOREIGN KEY (event_id)
+    CONSTRAINT fk_draft_event FOREIGN KEY (event_id)
         REFERENCES Event(event_id)
-        ON DELETE CASCADE ON UPDATE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_draft_slot FOREIGN KEY (slot_id)
+        REFERENCES EventSlot(slot_id)
+        ON UPDATE CASCADE
 );
+
+
